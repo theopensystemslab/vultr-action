@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getEnv } from "./common";
+import type { Vultr } from "./vultr";
 
 const api =
   <T>(method: "post" | "get", path: string) =>
@@ -20,15 +21,15 @@ const api =
         });
     });
 
-export const createInstance = api<CreateInstance>("post", "instances");
+export const createInstance = api<Vultr.Instance>("post", "instances");
 
 export const getInstance = (id: string) =>
-  api<CreateInstance>("get", `instances/${id}`);
+  api<Vultr.Instance>("get", `instances/${id}`);
 
-export const createDomain = api<CreateDomain>("post", "domains");
+export const createDomain = api<Vultr.Domain>("post", "domains");
 
 export const createRecord = (domain: string) =>
-  api<CreateRecord>("post", `domains/${domain}/records`);
+  api<Vultr.Record>("post", `domains/${domain}/records`);
 
 export const getInstanceIPAddress = async (
   id: string
