@@ -3309,21 +3309,10 @@ var axios = __nccwpck_require__(744);
 var axios_default = /*#__PURE__*/__nccwpck_require__.n(axios);
 ;// CONCATENATED MODULE: ./src/common.ts
 
-const getEnv = (matcher) => {
-    if (process.env[matcher])
-        return process.env[matcher];
-    return Object.entries(process.env).reduce((acc, [k, v]) => {
-        const m = RegExp(matcher).exec(k);
-        if (m === null || m === void 0 ? void 0 : m[1]) {
-            acc[m[1].toLowerCase()] = v;
-        }
-        return acc;
-    }, {});
-};
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 const get = (key) => {
     var _a;
-    const value = (_a = process.env[key.replace(/-/g, "_")]) !== null && _a !== void 0 ? _a : (0,core.getInput)(key);
+    const value = (_a = process.env[key]) !== null && _a !== void 0 ? _a : (0,core.getInput)(key);
     if (!value)
         throw new Error(`'${key}' not found`);
     return value;
@@ -3354,7 +3343,7 @@ const api = (method, path) => (data) => new Promise((res, rej) => {
         url: `https://api.vultr.com/v2/${path}`,
         method,
         headers: {
-            Authorization: `Bearer ${get("api-key")}`,
+            Authorization: `Bearer ${get("api_key")}`,
         },
         data,
     })
@@ -3420,17 +3409,6 @@ var src_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (undefined && undefined.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 
 
 
@@ -3439,20 +3417,20 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
         switch (action) {
             case "create":
                 const domain = get("domain");
-                const id = get("pullrequest-id");
+                const id = get("pullrequest_id");
                 const fullDomain = [id, domain].join(".");
                 log("creating instance");
-                const _a = (yield createInstance({
-                    api_key: get("api-key"),
+                const { instance } = yield createInstance({
+                    api_key: get("api_key"),
                     hostname: fullDomain,
                     label: fullDomain,
-                    os_id: get("os-id"),
+                    os_id: get("os_id"),
                     plan: get("plan"),
                     region: get("region"),
                     tag: get("tag"),
-                })).instance, { default_password } = _a, safeInstance = __rest(_a, ["default_password"]);
-                log({ safeInstance });
-                const ip = yield getIPAddress(safeInstance.id);
+                });
+                log({ instance });
+                const ip = yield getIPAddress(instance.id);
                 log({ ip });
                 const records = yield Promise.all([
                     createRecord(`${domain}`)({
@@ -3467,10 +3445,11 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                     }),
                 ]);
                 log({ records });
-                (0,core.setOutput)("ip-address", ip);
-                (0,core.setOutput)("instance", safeInstance);
+                (0,core.setOutput)("ip_address", ip);
+                (0,core.setOutput)("default_password", instance.default_password);
+                (0,core.setOutput)("instance", instance);
                 log("waiting for active status");
-                yield confirmInstanceIsReady(safeInstance.id);
+                yield confirmInstanceIsReady(instance.id);
                 return;
             default:
                 throw new Error(`action '${action}' not supported`);

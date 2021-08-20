@@ -12,22 +12,20 @@ const go = async (action: string) => {
     switch (action) {
       case "create":
         const domain = get("domain");
-        const id = get("pullrequest-id");
+        const id = get("pullrequest_id");
         const fullDomain = [id, domain].join(".");
         log("creating instance");
-        const {
-          instance: { default_password, ...safeInstance },
-        } = await createInstance({
-          api_key: get("api-key"),
+        const { instance } = await createInstance({
+          api_key: get("api_key"),
           hostname: fullDomain,
           label: fullDomain,
-          os_id: get("os-id"),
+          os_id: get("os_id"),
           plan: get("plan"),
           region: get("region"),
           tag: get("tag"),
         });
-        log({ safeInstance });
-        const ip = await getIPAddress(safeInstance.id);
+        log({ instance });
+        const ip = await getIPAddress(instance.id);
         log({ ip });
         const records = await Promise.all([
           createRecord(`${domain}`)({
@@ -42,10 +40,11 @@ const go = async (action: string) => {
           }),
         ]);
         log({ records });
-        setOutput("ip-address", ip);
-        setOutput("instance", safeInstance);
+        setOutput("ip_address", ip);
+        setOutput("default_password", instance.default_password);
+        setOutput("instance", instance);
         log("waiting for active status");
-        await confirmInstanceIsReady(safeInstance.id);
+        await confirmInstanceIsReady(instance.id);
         return;
       default:
         throw new Error(`action '${action}' not supported`);

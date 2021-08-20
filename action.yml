@@ -3,23 +3,25 @@ description: "Manages a vultr server"
 inputs:
   action:
     required: true
-  api-key:
+  api_key:
     required: true
   domain:
     required: true
-  os-id:
+  os_id:
     required: true
   plan:
     required: true
-  pullrequest-id:
+  pullrequest_id:
     required: true
   region:
     required: true
   tag:
     required: true
 outputs:
-  ip-address:
+  ip_address:
     description: "IP address"
+  default_password:
+    description: "Temporary password"
   instance:
     description: "object of created instance"
 runs:

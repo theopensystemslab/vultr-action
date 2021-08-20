@@ -11,7 +11,7 @@ const api =
           url: `https://api.vultr.com/v2/${path}`,
           method,
           headers: {
-            Authorization: `Bearer ${get("api-key")}`,
+            Authorization: `Bearer ${get("api_key")}`,
           },
           data,
         })
