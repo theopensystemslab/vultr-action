@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getEnv } from "./common";
+import { get, sleep } from "./common";
 import type { Vultr } from "./vultr";
 
 const api =
@@ -11,13 +11,17 @@ const api =
           url: `https://api.vultr.com/v2/${path}`,
           method,
           headers: {
-            Authorization: `Bearer ${getEnv("VULTR_API_KEY")}`,
+            Authorization: `Bearer ${get("api-key")}`,
           },
           data,
         })
         .then(({ data }) => res(data))
         .catch((err) => {
-          rej(err.response?.data ?? err);
+          rej(
+            err.response?.data
+              ? new Error(JSON.stringify(err.response.data))
+              : err
+          );
         });
     });
 
@@ -43,4 +47,39 @@ export const getInstanceIPAddress = async (
     console.error(err);
     return undefined;
   }
+};
+
+export const getIPAddress = async (
+  instanceId: string,
+  { delay = 5_000, maxAttempts = 30 } = {}
+) => {
+  let _ip: string | undefined;
+  for (let i = maxAttempts; i > 0; i--) {
+    _ip = await getInstanceIPAddress(instanceId);
+    if (_ip) break;
+    await sleep(delay);
+  }
+  if (!_ip) throw new Error("unable to get IP Address");
+
+  return _ip;
+};
+
+export const confirmInstanceIsReady = async (
+  id: string,
+  { delay = 15_000, maxAttempts = 60 } = {}
+) => {
+  let matched = false;
+  for (let i = maxAttempts; i > 0; i--) {
+    const { instance } = await getInstance(id)();
+    if (
+      instance.power_status === "running" &&
+      instance.server_status === "ok" &&
+      instance.status === "active"
+    ) {
+      matched = true;
+      break;
+    }
+    await sleep(delay);
+  }
+  if (!matched) throw new Error("instance ready timeout");
 };

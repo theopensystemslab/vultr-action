@@ -1,0 +1,28 @@
+name: "Vultr Deploy"
+description: "Manages a vultr server"
+
+inputs:
+  action:
+    required: true
+  api-key:
+    required: true
+  pullrequest-id:
+    required: true
+  domain:
+    required: true
+  os-id:
+    required: true
+  plan:
+    required: true
+  region:
+    required: true
+  tag:
+    required: true
+
+outputs:
+  ip-address:
+  instance:
+
+runs:
+  using: "node14"
+  main: "dist/index.js"

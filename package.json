@@ -1,12 +1,18 @@
 {
   "name": "vultr",
+  "scripts": {
+    "build": "npx etsc"
+  },
   "devDependencies": {
     "@types/node": "^16.6.1",
     "esbuild": "^0.12.20",
+    "esbuild-node-tsc": "^1.6.1",
     "esbuild-runner": "^2.2.0",
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
     "axios": "^0.21.1"
   }
 }
