@@ -6,13 +6,13 @@ inputs:
     required: true
   api-key:
     required: true
-  pullrequest-id:
-    required: true
   domain:
     required: true
   os-id:
     required: true
   plan:
+    required: true
+  pullrequest-id:
     required: true
   region:
     required: true
