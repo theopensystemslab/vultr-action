@@ -1,6 +1,5 @@
 name: "Vultr Deploy"
 description: "Manages a vultr server"
-
 inputs:
   action:
     required: true
@@ -18,11 +17,9 @@ inputs:
     required: true
   tag:
     required: true
-
 outputs:
   ip-address:
   instance:
-
 runs:
-  using: "node14"
+  using: "node12"
   main: "dist/index.js"
