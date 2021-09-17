@@ -3,24 +3,24 @@ lockfileVersion: 5.3
 specifiers:
   '@actions/core': ^1.5.0
   '@actions/github': ^5.0.0
-  '@types/node': ^16.6.2
+  '@types/node': ^16.9.2
   '@vercel/ncc': ^0.29.2
-  axios: ^0.21.1
-  esbuild: ^0.12.21
-  esbuild-runner: ^2.2.0
-  typescript: ^4.3.5
+  axios: ^0.21.4
+  esbuild: ^0.12.28
+  esbuild-runner: ^2.2.1
+  typescript: ^4.4.3
 
 dependencies:
   '@actions/core': 1.5.0
   '@actions/github': 5.0.0
-  axios: 0.21.1
+  axios: 0.21.4
 
 devDependencies:
-  '@types/node': 16.6.2
+  '@types/node': 16.9.2
   '@vercel/ncc': 0.29.2
-  esbuild: 0.12.21
-  esbuild-runner: 2.2.0_esbuild@0.12.21
-  typescript: 4.3.5
+  esbuild: 0.12.28
+  esbuild-runner: 2.2.1_esbuild@0.12.28
+  typescript: 4.4.3
 
 packages:
 
@@ -33,8 +33,8 @@ packages:
     dependencies:
       '@actions/http-client': 1.0.11
       '@octokit/core': 3.5.1
-      '@octokit/plugin-paginate-rest': 2.15.1_@octokit+core@3.5.1
-      '@octokit/plugin-rest-endpoint-methods': 5.8.0_@octokit+core@3.5.1
+      '@octokit/plugin-paginate-rest': 2.16.3_@octokit+core@3.5.1
+      '@octokit/plugin-rest-endpoint-methods': 5.10.4_@octokit+core@3.5.1
     dev: false
 
   /@actions/http-client/1.0.11:
@@ -43,20 +43,20 @@ packages:
       tunnel: 0.0.6
     dev: false
 
-  /@octokit/auth-token/2.4.5:
-    resolution: {integrity: sha512-BpGYsPgJt05M7/L/5FoE1PiAbdxXFZkX/3kDYcsvd1v6UhlnE5e96dTDr0ezX/EFwciQxf3cNV0loipsURU+WA==}
+  /@octokit/auth-token/2.5.0:
+    resolution: {integrity: sha512-r5FVUJCOLl19AxiuZD2VRZ/ORjp/4IN98Of6YJoJOkY75CIBuYfmiNHGrDwXr+aLGG55igl9QrxX3hbiXlLb+g==}
     dependencies:
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
     dev: false
 
   /@octokit/core/3.5.1:
     resolution: {integrity: sha512-omncwpLVxMP+GLpLPgeGJBF6IWJFjXDS5flY5VbppePYX9XehevbDykRH9PdCdvqt9TS5AOTiDide7h0qrkHjw==}
     dependencies:
-      '@octokit/auth-token': 2.4.5
-      '@octokit/graphql': 4.6.4
+      '@octokit/auth-token': 2.5.0
+      '@octokit/graphql': 4.8.0
       '@octokit/request': 5.6.1
       '@octokit/request-error': 2.1.0
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
       before-after-hook: 2.2.2
       universal-user-agent: 6.0.0
     dev: false
@@ -64,46 +64,46 @@ packages:
   /@octokit/endpoint/6.0.12:
     resolution: {integrity: sha512-lF3puPwkQWGfkMClXb4k/eUT/nZKQfxinRWJrdZaJO85Dqwo/G0yOC434Jr2ojwafWJMYqFGFa5ms4jJUgujdA==}
     dependencies:
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
       is-plain-object: 5.0.0
       universal-user-agent: 6.0.0
     dev: false
 
-  /@octokit/graphql/4.6.4:
-    resolution: {integrity: sha512-SWTdXsVheRmlotWNjKzPOb6Js6tjSqA2a8z9+glDJng0Aqjzti8MEWOtuT8ZSu6wHnci7LZNuarE87+WJBG4vg==}
+  /@octokit/graphql/4.8.0:
+    resolution: {integrity: sha512-0gv+qLSBLKF0z8TKaSKTsS39scVKF9dbMxJpj3U0vC7wjNWFuIpL/z76Qe2fiuCbDRcJSavkXsVtMS6/dtQQsg==}
     dependencies:
       '@octokit/request': 5.6.1
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
       universal-user-agent: 6.0.0
     dev: false
 
-  /@octokit/openapi-types/9.7.0:
-    resolution: {integrity: sha512-TUJ16DJU8mekne6+KVcMV5g6g/rJlrnIKn7aALG9QrNpnEipFc1xjoarh0PKaAWf2Hf+HwthRKYt+9mCm5RsRg==}
+  /@octokit/openapi-types/10.2.2:
+    resolution: {integrity: sha512-EVcXQ+ZrC04cg17AMg1ofocWMxHDn17cB66ZHgYc0eUwjFtxS0oBzkyw2VqIrHBwVgtfoYrq1WMQfQmMjUwthw==}
     dev: false
 
-  /@octokit/plugin-paginate-rest/2.15.1_@octokit+core@3.5.1:
-    resolution: {integrity: sha512-47r52KkhQDkmvUKZqXzA1lKvcyJEfYh3TKAIe5+EzMeyDM3d+/s5v11i2gTk8/n6No6DPi3k5Ind6wtDbo/AEg==}
+  /@octokit/plugin-paginate-rest/2.16.3_@octokit+core@3.5.1:
+    resolution: {integrity: sha512-kdc65UEsqze/9fCISq6BxLzeB9qf0vKvKojIfzgwf4tEF+Wy6c9dXnPFE6vgpoDFB1Z5Jek5WFVU6vL1w22+Iw==}
     peerDependencies:
       '@octokit/core': '>=2'
     dependencies:
       '@octokit/core': 3.5.1
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
     dev: false
 
-  /@octokit/plugin-rest-endpoint-methods/5.8.0_@octokit+core@3.5.1:
-    resolution: {integrity: sha512-qeLZZLotNkoq+it6F+xahydkkbnvSK0iDjlXFo3jNTB+Ss0qIbYQb9V/soKLMkgGw8Q2sHjY5YEXiA47IVPp4A==}
+  /@octokit/plugin-rest-endpoint-methods/5.10.4_@octokit+core@3.5.1:
+    resolution: {integrity: sha512-Dh+EAMCYR9RUHwQChH94Skl0lM8Fh99auT8ggck/xTzjJrwVzvsd0YH68oRPqp/HxICzmUjLfaQ9sy1o1sfIiA==}
     peerDependencies:
       '@octokit/core': '>=3'
     dependencies:
       '@octokit/core': 3.5.1
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
       deprecation: 2.3.1
     dev: false
 
   /@octokit/request-error/2.1.0:
     resolution: {integrity: sha512-1VIvgXxs9WHSjicsRwq8PlR2LR2x6DwsJAaFgzdi0JfJoGSO8mYI/cHJQ+9FbN21aa+DrgNLnwObmyeSC8Rmpg==}
     dependencies:
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
       deprecation: 2.3.1
       once: 1.4.0
     dev: false
@@ -113,20 +113,20 @@ packages:
     dependencies:
       '@octokit/endpoint': 6.0.12
       '@octokit/request-error': 2.1.0
-      '@octokit/types': 6.25.0
+      '@octokit/types': 6.28.1
       is-plain-object: 5.0.0
-      node-fetch: 2.6.1
+      node-fetch: 2.6.2
       universal-user-agent: 6.0.0
     dev: false
 
-  /@octokit/types/6.25.0:
-    resolution: {integrity: sha512-bNvyQKfngvAd/08COlYIN54nRgxskmejgywodizQNyiKoXmWRAjKup2/LYwm+T9V0gsKH6tuld1gM0PzmOiB4Q==}
+  /@octokit/types/6.28.1:
+    resolution: {integrity: sha512-XlxDoQLFO5JnFZgKVQTYTvXRsQFfr/GwDUU108NJ9R5yFPkA2qXhTJjYuul3vE4eLXP40FA2nysOu2zd6boE+w==}
     dependencies:
-      '@octokit/openapi-types': 9.7.0
+      '@octokit/openapi-types': 10.2.2
     dev: false
 
-  /@types/node/16.6.2:
-    resolution: {integrity: sha512-LSw8TZt12ZudbpHc6EkIyDM3nHVWKYrAvGy6EAJfNfjusbwnThqjqxUKKRwuV3iWYeW/LYMzNgaq3MaLffQ2xA==}
+  /@types/node/16.9.2:
+    resolution: {integrity: sha512-ZHty/hKoOLZvSz6BtP1g7tc7nUeJhoCf3flLjh8ZEv1vFKBWHXcnMbJMyN/pftSljNyy0kNW/UqI3DccnBnZ8w==}
     dev: true
 
   /@vercel/ncc/0.29.2:
@@ -134,10 +134,10 @@ packages:
     hasBin: true
     dev: true
 
-  /axios/0.21.1:
-    resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
+  /axios/0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.2
+      follow-redirects: 1.14.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -154,25 +154,25 @@ packages:
     resolution: {integrity: sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==}
     dev: false
 
-  /esbuild-runner/2.2.0_esbuild@0.12.21:
-    resolution: {integrity: sha512-Ew8AF48i+edfI37qA157g5gQVsgBd8kbg0rOiGDZGxnf3/aUK9GXSYHGcfP5RNZF/6ziJWT0sD96jAfssYi0qQ==}
+  /esbuild-runner/2.2.1_esbuild@0.12.28:
+    resolution: {integrity: sha512-VP0VfJJZiZ3cKzdOH59ZceDxx/GzBKra7tiGM8MfFMLv6CR1/cpsvtQ3IsJI3pz7HyeYxtbPyecj3fHwR+3XcQ==}
     hasBin: true
     peerDependencies:
       esbuild: '*'
     dependencies:
-      esbuild: 0.12.21
+      esbuild: 0.12.28
       source-map-support: 0.5.19
-      tslib: 2.2.0
+      tslib: 2.3.1
     dev: true
 
-  /esbuild/0.12.21:
-    resolution: {integrity: sha512-7hyXbU3g94aREufI/5nls7Xcc+RGQeZWZApm6hoBaFvt2BPtpT4TjFMQ9Tb1jU8XyBGz00ShmiyflCogphMHFQ==}
+  /esbuild/0.12.28:
+    resolution: {integrity: sha512-pZ0FrWZXlvQOATlp14lRSk1N9GkeJ3vLIwOcUoo3ICQn9WNR4rWoNi81pbn6sC1iYUy7QPqNzI3+AEzokwyVcA==}
     hasBin: true
     requiresBuild: true
     dev: true
 
-  /follow-redirects/1.14.2:
-    resolution: {integrity: sha512-yLR6WaE2lbF0x4K2qE2p9PEXKLDjUjnR/xmjS3wHAYxtlsI9MLLBJUZirAHKzUZDGLxje7w/cXR49WOUo4rbsA==}
+  /follow-redirects/1.14.4:
+    resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -186,8 +186,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /node-fetch/2.6.1:
-    resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
+  /node-fetch/2.6.2:
+    resolution: {integrity: sha512-aLoxToI6RfZ+0NOjmWAgn9+LEd30YCkJKFSyWacNZdEKTit/ZMcKjGkTRo8uWEsnIb/hfKecNPEbln02PdWbcA==}
     engines: {node: 4.x || >=6.0.0}
     dev: false
 
@@ -209,8 +209,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /tslib/2.2.0:
-    resolution: {integrity: sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w==}
+  /tslib/2.3.1:
+    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
     dev: true
 
   /tunnel/0.0.6:
@@ -218,8 +218,8 @@ packages:
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
     dev: false
 
-  /typescript/4.3.5:
-    resolution: {integrity: sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==}
+  /typescript/4.4.3:
+    resolution: {integrity: sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true

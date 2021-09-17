@@ -3,7 +3,7 @@ import { get, sleep } from "./common";
 import type { Vultr } from "./vultr";
 
 const api =
-  <T>(method: "post" | "get", path: string) =>
+  <T>(method: "post" | "get" | "delete", path: string) =>
   (data?: Record<string, unknown>): Promise<T> =>
     new Promise((res, rej) => {
       axios
@@ -29,6 +29,16 @@ export const createInstance = api<Vultr.Instance>("post", "instances");
 
 export const getInstance = (id: string) =>
   api<Vultr.Instance>("get", `instances/${id}`);
+
+export const listInstances = api<{ instances: Vultr.Instance["instance"][] }>(
+  "get",
+  `instances`
+);
+
+export const destroyInstance = (id: string) => api("delete", `instances/${id}`);
+
+export const destroyDomain = (domain: string) =>
+  api("delete", `domains/${domain}`);
 
 export const createDomain = api<Vultr.Domain>("post", "domains");
 

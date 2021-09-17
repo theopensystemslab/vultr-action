@@ -3,17 +3,21 @@ import {
   confirmInstanceIsReady,
   createInstance,
   createRecord,
+  destroyDomain,
+  destroyInstance,
   getIPAddress,
+  listInstances,
 } from "./api";
 import { get, log } from "./common";
 
 const go = async (action: string) => {
   try {
+    const id = get("pullrequest_id");
+    const domain = get("domain");
+    const fullDomain = [id, domain].join(".");
+
     switch (action) {
       case "create":
-        const domain = get("domain");
-        const id = get("pullrequest_id");
-        const fullDomain = [id, domain].join(".");
         log("creating instance");
         const { instance } = await createInstance({
           api_key: get("api_key"),
@@ -46,6 +50,40 @@ const go = async (action: string) => {
         log("waiting for active status");
         await confirmInstanceIsReady(instance.id);
         return;
+
+      case "destroy":
+        log("performing teardown");
+        const { instances } = await listInstances();
+        const matchingInstances = instances.filter(
+          ({ label }) => label === fullDomain
+        );
+
+        log(`found ${matchingInstances.length} servers`);
+        let count = 0;
+        // XXX: 'for of' so that await works
+        for (const instance of matchingInstances) {
+          try {
+            log(
+              `removing server ${count++}/${matchingInstances.length} (${
+                instance.id
+              })`
+            );
+            await destroyInstance(instance.id)();
+            log("removed server");
+          } catch (err) {}
+        }
+
+        log("removing DNS entries");
+
+        log(`removing ${fullDomain} (A-record)`);
+        await destroyDomain(fullDomain);
+        log("removed");
+
+        log(`removing *.${fullDomain} (CNAME wildcard)`);
+        await destroyDomain(`*.${fullDomain}`);
+        log("removed");
+        return;
+
       default:
         throw new Error(`action '${action}' not supported`);
     }
