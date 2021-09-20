@@ -3705,6 +3705,9 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                 (0,core.setOutput)("instance", instance);
                 log("waiting for active status");
                 yield confirmInstanceIsReady(instance.id);
+                // XXX: sometimes the server isn't immediately ready for an ssh session
+                log("instance active... waiting another 20s to ensure it's accessible");
+                yield sleep(20000);
                 return;
             case "destroy":
                 log("performing teardown");

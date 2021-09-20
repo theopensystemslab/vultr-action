@@ -8,7 +8,7 @@ import {
   getIPAddress,
   listInstances,
 } from "./api";
-import { get, log } from "./common";
+import { get, log, sleep } from "./common";
 
 const go = async (action: string) => {
   try {
@@ -49,6 +49,9 @@ const go = async (action: string) => {
         setOutput("instance", instance);
         log("waiting for active status");
         await confirmInstanceIsReady(instance.id);
+        // XXX: sometimes the server isn't immediately ready for an ssh session
+        log("instance active... waiting another 20s to ensure it's accessible");
+        await sleep(20_000);
         return;
 
       case "destroy":
