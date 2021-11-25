@@ -4792,8 +4792,8 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                         const existing = records.filter(({ type, name }) => (type === "CNAME" && name === `*.${id}`) ||
                             (type === "A" && name === id));
                         if (existing.length > 0) {
-                            console.log("DNS records already exist");
-                            console.log(existing);
+                            log("DNS records already exist");
+                            log(existing);
                             process.exit(0);
                         }
                     }),
@@ -4801,8 +4801,8 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                         const { instances } = yield listInstances(500)();
                         const existing = instances.filter((i) => i.label === fullDomain);
                         if (existing) {
-                            console.log("Instances already exist");
-                            console.log(existing);
+                            log("Instances already exist");
+                            log(existing);
                             process.exit(0);
                         }
                     }),

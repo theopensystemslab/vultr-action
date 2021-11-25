@@ -29,8 +29,8 @@ const go = async (action: string) => {
                 (type === "A" && name === id)
             );
             if (existing.length > 0) {
-              console.log("DNS records already exist");
-              console.log(existing);
+              log("DNS records already exist");
+              log(existing);
               process.exit(0);
             }
           },
@@ -38,8 +38,8 @@ const go = async (action: string) => {
             const { instances } = await listInstances(500)();
             const existing = instances.filter((i) => i.label === fullDomain);
             if (existing) {
-              console.log("Instances already exist");
-              console.log(existing);
+              log("Instances already exist");
+              log(existing);
               process.exit(0);
             }
           },
