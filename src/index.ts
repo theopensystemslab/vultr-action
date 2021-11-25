@@ -41,7 +41,7 @@ const go = async (action: string) => {
             log("🔍 checking for existing instances");
             const { instances } = await listInstances(500)();
             const existing = instances.filter((i) => i.label === fullDomain);
-            if (existing) {
+            if (existing.length > 0) {
               log("❌ instances already exist");
               log(existing);
               process.exit(0);
