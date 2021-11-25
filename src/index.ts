@@ -21,7 +21,7 @@ const go = async (action: string) => {
       case "create":
         // XXX: check if DNS or instances exist, exit gracefully if they do
         await Promise.all([
-          async () => {
+          (async () => {
             log("🔍 checking for existing DNS");
             const { records } = await listRecords(domain, 500)();
             const existing = records.filter(
@@ -36,8 +36,8 @@ const go = async (action: string) => {
             } else {
               log("✅ no existing DNS records");
             }
-          },
-          async () => {
+          })(),
+          (async () => {
             log("🔍 checking for existing instances");
             const { instances } = await listInstances(500)();
             const existing = instances.filter((i) => i.label === fullDomain);
@@ -48,7 +48,7 @@ const go = async (action: string) => {
             } else {
               log("✅ no existing instances");
             }
-          },
+          })(),
         ]);
 
         log("🏗️ creating instance");
