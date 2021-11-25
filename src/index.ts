@@ -3,8 +3,8 @@ import {
   confirmInstanceIsReady,
   createInstance,
   createRecord,
-  destroyDomain,
   destroyInstance,
+  destroyRecord,
   getIPAddress,
   listInstances,
   listRecords,
@@ -96,30 +96,40 @@ const go = async (action: string) => {
           ({ label }) => label === fullDomain
         );
 
-        log(`🔍 found ${matchingInstances.length} servers`);
+        log(`🔍 found ${matchingInstances.length} instances...`);
         let count = 0;
         // XXX: 'for of' so that await works
         for (const instance of matchingInstances) {
           try {
             log(
-              `removing server ${count++}/${matchingInstances.length} (${
+              `removing instance ${count++}/${matchingInstances.length} (${
                 instance.id
               })`
             );
             await destroyInstance(instance.id)();
-            log("removed server");
-          } catch (err) {}
+            log("🔥 removed instance");
+          } catch (err) {
+            log(`⚠️ unable to remove ${JSON.stringify(instance)}`);
+          }
         }
 
-        log("removing DNS entries");
+        const { records: allRecords } = await listRecords(domain, 500)();
 
-        log(`removing ${fullDomain} (A-record)`);
-        await destroyDomain(fullDomain);
-        log("removed");
+        const recordsToDelete = allRecords.filter((r) =>
+          r.name.endsWith(fullDomain)
+        );
 
-        log(`removing *.${fullDomain} (CNAME wildcard)`);
-        await destroyDomain(`*.${fullDomain}`);
-        log("removed");
+        log(`🔍 found ${recordsToDelete.length} DNS records...`);
+
+        for (const record of recordsToDelete) {
+          try {
+            await destroyRecord(domain, record.id);
+            log(`🔥 removed ${record.name}`);
+          } catch (err) {
+            log(`⚠️ unable to remove ${record.name}`);
+          }
+        }
+
         return;
 
       default:

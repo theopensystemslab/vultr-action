@@ -1,5 +1,5 @@
 import axios from "axios";
-import { get, sleep } from "./common";
+import { get } from "./common";
 import type { Vultr } from "./vultr";
 
 const api =
@@ -45,8 +45,8 @@ export const listRecords = (domain: string, perPage = 100) =>
 
 export const destroyInstance = (id: string) => api("delete", `instances/${id}`);
 
-export const destroyDomain = (domain: string) =>
-  api("delete", `domains/${domain}`);
+export const destroyRecord = (domain: string, id: string) =>
+  api("delete", `domains/${domain}/records/${id}`);
 
 export const createDomain = api<Vultr.Domain>("post", "domains");
 
