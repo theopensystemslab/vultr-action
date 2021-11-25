@@ -17,6 +17,7 @@ const api =
         })
         .then(({ data }) => res(data))
         .catch((err) => {
+          console.log(`https://api.vultr.com/v2/${path}`);
           rej(
             err.response?.data
               ? new Error(JSON.stringify(err.response.data))
@@ -36,10 +37,10 @@ export const listInstances = (perPage = 100) =>
     `instances?per_page=${perPage}`
   );
 
-export const listRecords = (perPage = 100) =>
+export const listRecords = (domain: string, perPage = 100) =>
   api<{ records: Vultr.Record["record"][] }>(
     "get",
-    `records?per_page=${perPage}`
+    `domains/${domain}/records?per_page=${perPage}`
   );
 
 export const destroyInstance = (id: string) => api("delete", `instances/${id}`);

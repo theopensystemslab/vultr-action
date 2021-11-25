@@ -22,30 +22,36 @@ const go = async (action: string) => {
         // XXX: check if DNS or instances exist, exit gracefully if they do
         await Promise.all([
           async () => {
-            const { records } = await listRecords(500)();
+            log("🔍 checking for existing DNS");
+            const { records } = await listRecords(domain, 500)();
             const existing = records.filter(
               ({ type, name }) =>
                 (type === "CNAME" && name === `*.${id}`) ||
                 (type === "A" && name === id)
             );
             if (existing.length > 0) {
-              log("DNS records already exist");
+              log("❌ DNS records already exist");
               log(existing);
               process.exit(0);
+            } else {
+              log("✅ no existing DNS records");
             }
           },
           async () => {
+            log("🔍 checking for existing instances");
             const { instances } = await listInstances(500)();
             const existing = instances.filter((i) => i.label === fullDomain);
             if (existing) {
-              log("Instances already exist");
+              log("❌ instances already exist");
               log(existing);
               process.exit(0);
+            } else {
+              log("✅ no existing instances");
             }
           },
         ]);
 
-        log("creating instance");
+        log("🏗️ creating instance");
         const { instance } = await createInstance({
           api_key: get("api_key"),
           hostname: fullDomain,
@@ -74,21 +80,23 @@ const go = async (action: string) => {
         setOutput("ip_address", ip);
         setOutput("default_password", instance.default_password);
         setOutput("instance", instance);
-        log("waiting for active status");
+        log("⌛ waiting for active status");
         await confirmInstanceIsReady(instance.id);
         // XXX: sometimes the server isn't immediately ready for an ssh session
-        log("instance active... waiting another 20s to ensure it's accessible");
+        log(
+          "✅ instance active... waiting another 20s to ensure it's accessible"
+        );
         await sleep(20_000);
         return;
 
       case "destroy":
-        log("performing teardown");
+        log("🗑️ performing teardown");
         const { instances } = await listInstances(500)();
         const matchingInstances = instances.filter(
           ({ label }) => label === fullDomain
         );
 
-        log(`found ${matchingInstances.length} servers`);
+        log(`🔍 found ${matchingInstances.length} servers`);
         let count = 0;
         // XXX: 'for of' so that await works
         for (const instance of matchingInstances) {
