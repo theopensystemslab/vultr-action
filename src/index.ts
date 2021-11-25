@@ -107,7 +107,7 @@ const go = async (action: string) => {
               })`
             );
             await destroyInstance(instance.id)();
-            log("🔥 removed instance");
+            log(`🔥 removed instance ${instance.id}`);
           } catch (err) {
             log(`⚠️ unable to remove ${JSON.stringify(instance)}`);
           }
@@ -116,7 +116,7 @@ const go = async (action: string) => {
         const { records: allRecords } = await listRecords(domain, 500)();
 
         const recordsToDelete = allRecords.filter((r) =>
-          r.name.endsWith(fullDomain)
+          [`*.${id}`, id].includes(r.name)
         );
 
         log(`🔍 found ${recordsToDelete.length} DNS records...`);

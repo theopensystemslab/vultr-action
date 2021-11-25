@@ -4862,14 +4862,14 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                     try {
                         log(`removing instance ${count++}/${matchingInstances.length} (${instance.id})`);
                         yield destroyInstance(instance.id)();
-                        log("🔥 removed instance");
+                        log(`🔥 removed instance ${instance.id}`);
                     }
                     catch (err) {
                         log(`⚠️ unable to remove ${JSON.stringify(instance)}`);
                     }
                 }
                 const { records: allRecords } = yield listRecords(domain, 500)();
-                const recordsToDelete = allRecords.filter((r) => r.name.endsWith(fullDomain));
+                const recordsToDelete = allRecords.filter((r) => [`*.${id}`, id].includes(r.name));
                 log(`🔍 found ${recordsToDelete.length} DNS records...`);
                 for (const record of recordsToDelete) {
                     try {
