@@ -1,5 +1,5 @@
 import axios from "axios";
-import { get } from "./common";
+import { get, sleep } from "./common";
 import type { Vultr } from "./vultr";
 
 const api =

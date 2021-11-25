@@ -1,6 +1,6 @@
 {
   "name": "vultr-action",
-  "version": "1.10",
+  "version": "1.11",
   "scripts": {
     "build": "ncc build src/index.ts -o dist --license licenses.txt"
   },
