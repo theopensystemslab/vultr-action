@@ -7,6 +7,7 @@ import {
   destroyInstance,
   getIPAddress,
   listInstances,
+  listRecords,
 } from "./api";
 import { get, log, sleep } from "./common";
 
@@ -18,6 +19,32 @@ const go = async (action: string) => {
 
     switch (action) {
       case "create":
+        // XXX: check if DNS or instances exist, exit gracefully if they do
+        await Promise.all([
+          async () => {
+            const { records } = await listRecords(500)();
+            const existing = records.filter(
+              ({ type, name }) =>
+                (type === "CNAME" && name === `*.${id}`) ||
+                (type === "A" && name === id)
+            );
+            if (existing.length > 0) {
+              console.log("DNS records already exist");
+              console.log(existing);
+              process.exit(0);
+            }
+          },
+          async () => {
+            const { instances } = await listInstances(500)();
+            const existing = instances.filter((i) => i.label === fullDomain);
+            if (existing) {
+              console.log("Instances already exist");
+              console.log(existing);
+              process.exit(0);
+            }
+          },
+        ]);
+
         log("creating instance");
         const { instance } = await createInstance({
           api_key: get("api_key"),
@@ -56,7 +83,7 @@ const go = async (action: string) => {
 
       case "destroy":
         log("performing teardown");
-        const { instances } = await listInstances();
+        const { instances } = await listInstances(500)();
         const matchingInstances = instances.filter(
           ({ label }) => label === fullDomain
         );

@@ -30,10 +30,17 @@ export const createInstance = api<Vultr.Instance>("post", "instances");
 export const getInstance = (id: string) =>
   api<Vultr.Instance>("get", `instances/${id}`);
 
-export const listInstances = api<{ instances: Vultr.Instance["instance"][] }>(
-  "get",
-  `instances`
-);
+export const listInstances = (perPage = 100) =>
+  api<{ instances: Vultr.Instance["instance"][] }>(
+    "get",
+    `instances?per_page=${perPage}`
+  );
+
+export const listRecords = (perPage = 100) =>
+  api<{ records: Vultr.Record["record"][] }>(
+    "get",
+    `records?per_page=${perPage}`
+  );
 
 export const destroyInstance = (id: string) => api("delete", `instances/${id}`);
 
