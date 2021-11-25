@@ -4788,7 +4788,7 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
             case "create":
                 // XXX: check if DNS or instances exist, exit gracefully if they do
                 yield Promise.all([
-                    () => src_awaiter(void 0, void 0, void 0, function* () {
+                    (() => src_awaiter(void 0, void 0, void 0, function* () {
                         log("🔍 checking for existing DNS");
                         const { records } = yield listRecords(domain, 500)();
                         const existing = records.filter(({ type, name }) => (type === "CNAME" && name === `*.${id}`) ||
@@ -4801,8 +4801,8 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                         else {
                             log("✅ no existing DNS records");
                         }
-                    }),
-                    () => src_awaiter(void 0, void 0, void 0, function* () {
+                    }))(),
+                    (() => src_awaiter(void 0, void 0, void 0, function* () {
                         log("🔍 checking for existing instances");
                         const { instances } = yield listInstances(500)();
                         const existing = instances.filter((i) => i.label === fullDomain);
@@ -4814,7 +4814,7 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                         else {
                             log("✅ no existing instances");
                         }
-                    }),
+                    }))(),
                 ]);
                 log("🏗️ creating instance");
                 const { instance } = yield createInstance({
