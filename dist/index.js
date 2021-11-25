@@ -4806,7 +4806,7 @@ const go = (action) => src_awaiter(void 0, void 0, void 0, function* () {
                         log("🔍 checking for existing instances");
                         const { instances } = yield listInstances(500)();
                         const existing = instances.filter((i) => i.label === fullDomain);
-                        if (existing) {
+                        if (existing.length > 0) {
                             log("❌ instances already exist");
                             log(existing);
                             process.exit(0);
