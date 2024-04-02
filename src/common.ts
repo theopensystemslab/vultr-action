@@ -1,17 +1,23 @@
 import { getInput } from "@actions/core";
 
-export const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+export const sleep = (durationMs: number) => new Promise(
+  res => setTimeout(res, durationMs))
 
-export const get = (key: string) => {
+export const getVar = (
+  key: string,
+  fallback: string | undefined = undefined,
+) => {
   const value = process.env[key] ?? getInput(key);
-  if (!value) throw new Error(`'${key}' not found`);
+  if (!value) {
+    if (fallback) return fallback;
+    throw new Error(`'${key}' not found`);
+  }
   return value;
 };
 
-export const log = (...x: any) => {
-  try {
-    console.log(JSON.stringify(x, null, 2));
-  } catch (err) {
-    console.log(x);
-  }
-};
+export const getDurationSeconds = (
+  startTimeMs: number,
+  endTimeMs: number,
+): number => {
+  return (endTimeMs - startTimeMs) / 1000
+}
