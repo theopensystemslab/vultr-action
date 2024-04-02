@@ -6,16 +6,10 @@ inputs:
   api_key:
     required: true
   domain:
-    required: true
-  os_id:
-    required: true
-  plan:
-    required: true
-  pullrequest_id:
-    required: true
-  region:
-    required: true
-  tag:
+    required: false
+  os:
+    required: false
+  pull_request_id:
     required: true
 outputs:
   ip_address:
@@ -25,5 +19,5 @@ outputs:
   instance:
     description: "object of created instance"
 runs:
-  using: "node12"
+  using: "node18"
   main: "dist/index.js"
