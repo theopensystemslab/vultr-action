@@ -31,7 +31,7 @@ const DEFAULT_OS = "ubuntu"
 const main = async (): Promise<number> => {
 
   console.log("🚀 running vultr script")
-  console.log("🔑 initializing vultr client with API key from env")
+  console.log("🔑 initializing vultr client with API key")
   const vultr = VultrNode.initialize({
     apiKey: getVar("api_key"),
   })
@@ -41,13 +41,13 @@ const main = async (): Promise<number> => {
   const domain = getVar("domain", DEFAULT_DOMAIN)
   const os = getVar("os", DEFAULT_OS)
 
-  console.log(`
-  🚀 running vultr script with following arguments parsed from command line:
-      action=${action}
-      domain=${domain}
-      pullRequestId=${pullRequestId}
-      os=${os}
-  `)
+  console.log(
+    `🚀 running vultr script with following arguments:
+        action=${action}
+        domain=${domain}
+        pullRequestId=${pullRequestId}
+        os=${os}`
+  )
 
   // in all cases we need to check for existence of resources first
   const [ existingRecordIds, existingInstanceIds ] = await Promise.all([
@@ -58,15 +58,15 @@ const main = async (): Promise<number> => {
   switch (action) {
     case 'create':
       if (existingRecordIds.length > 0 || existingInstanceIds.length > 0) {
-        console.error("❌ resources already exist - not attempting to create")
-        return 1
+        console.error("⚠️ resources already exist - not attempting to create")
+        return 0
       }
       console.log("🏗️ creating resources")
       return await create(vultr, domain, pullRequestId, VULTR_OS_ID_BY_OS[os])
     case 'destroy':
       if (existingRecordIds.length == 0 || existingInstanceIds.length == 0) {
-        console.error("❌ resources don't exist - not attempting to destroy")
-        return 1
+        console.error("⚠️ resources don't exist - not attempting to destroy")
+        return 0
       }
       console.log("🗑️ performing teardown")
       return await destroy(vultr, domain, existingRecordIds, existingInstanceIds)
