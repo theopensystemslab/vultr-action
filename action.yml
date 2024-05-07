@@ -6,10 +6,16 @@ inputs:
   api_key:
     required: true
   domain:
-    required: false
-  os:
-    required: false
+    required: true
+  os_type:
+    required: true
+  plan:
+    required: true
   pull_request_id:
+    required: true
+  region:
+    required: true
+  tag:
     required: true
 outputs:
   ip_address:

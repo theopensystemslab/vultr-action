@@ -1,5 +1,5 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["src/**.ts"],
-  "exclude": ["node_modules"],
+  "include": ["src/**.ts", "src/@vultr/vultr-node.d.ts"],
+  "exclude": ["node_modules"]
 }
