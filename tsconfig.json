@@ -1,6 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "es2015",
-    "moduleResolution": "node"
-  }
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "include": ["src/**.ts", "src/@vultr/vultr-node.d.ts"],
+  "exclude": ["node_modules"]
 }

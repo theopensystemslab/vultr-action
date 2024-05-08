@@ -7,11 +7,11 @@ inputs:
     required: true
   domain:
     required: true
-  os_id:
+  os_type:
     required: true
   plan:
     required: true
-  pullrequest_id:
+  pull_request_id:
     required: true
   region:
     required: true
@@ -25,5 +25,5 @@ outputs:
   instance:
     description: "object of created instance"
 runs:
-  using: "node12"
+  using: "node20"
   main: "dist/index.js"
