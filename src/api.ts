@@ -113,6 +113,7 @@ export const createInstance = async (
   id: string,
   osId: string,
   tag: string,
+  sshKeyIds?: string[],
 ): Promise<Instance> => {
   const host = `${id}.${domain}`;
   const res = await vultr.instances.createInstance({
@@ -122,6 +123,7 @@ export const createInstance = async (
     label: host,
     hostname: host,
     tags: [tag], // 'tag' is deprecated
+    sshkey_id: sshKeyIds,
   });
   // vultr-node doesn't necessarily throw a proper error if instance creation fails
   if (!res?.instance)

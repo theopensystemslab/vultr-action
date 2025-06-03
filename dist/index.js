@@ -35358,7 +35358,7 @@ const destroyDnsRecord = async (vultr, domain, id) => {
     });
 };
 exports.destroyDnsRecord = destroyDnsRecord;
-const createInstance = async (vultr, region, plan, domain, id, osId, tag) => {
+const createInstance = async (vultr, region, plan, domain, id, osId, tag, sshKeyIds) => {
     const host = `${id}.${domain}`;
     const res = await vultr.instances.createInstance({
         region: region,
@@ -35367,6 +35367,7 @@ const createInstance = async (vultr, region, plan, domain, id, osId, tag) => {
         label: host,
         hostname: host,
         tags: [tag], // 'tag' is deprecated
+        sshkey_id: sshKeyIds,
     });
     // vultr-node doesn't necessarily throw a proper error if instance creation fails
     if (!res?.instance)
@@ -35507,6 +35508,8 @@ const main = async () => {
     const domain = (0, common_1.getVar)("domain");
     const osType = (0, common_1.getVar)("os_type");
     const tag = (0, common_1.getVar)("tag");
+    // Accept comma separated list, ignoring spaces
+    const sshKeyIds = (0, common_1.getVar)("sshKeyIds").split(/\s*,\s*/);
     console.log(`🚀 running vultr script with following arguments:
         action=${action}
         region=${region}
@@ -35514,7 +35517,8 @@ const main = async () => {
         domain=${domain}
         pullRequestId=${pullRequestId}
         osType=${osType}
-        tag=${tag}`);
+        tag=${tag}
+        sshKeyIds=${sshKeyIds}`);
     const osId = (0, common_1.getOsId)(osType);
     if (!osId) {
         console.error(`❌ invalid os_type: ${osType} (must be one of: ${Object.keys(common_1.VULTR_OS_ID_BY_OS).join(", ")})`);
@@ -35532,7 +35536,7 @@ const main = async () => {
                 return 0;
             }
             console.log("🏗️ creating resources");
-            return await create(vultr, region, plan, domain, pullRequestId, osId, tag);
+            return await create(vultr, region, plan, domain, pullRequestId, osId, tag, sshKeyIds);
         case "destroy":
             if (existingRecordIds.length == 0 || existingInstanceIds.length == 0) {
                 console.error("⚠️ resources don't exist - not attempting to destroy");
@@ -35548,7 +35552,9 @@ const main = async () => {
 const checkIfDnsRecordsExist = async (vultr, domain, id) => {
     console.log(`🔍 checking for existing DNS records for pull request ${id} on domain ${domain}`);
     const allRecords = await (0, api_1.getAllRecords)(vultr, domain);
-    const existingRecords = allRecords.filter(({ type, name }) => (type === "CNAME" && name === `*.${id}`) || (type === "A" && name === id));
+    const existingRecords = allRecords.filter(({ type, name }) => (type === "A" && name === id) ||
+        (type === "A" && name === `*.${id}`) ||
+        (type === "TXT" && name === `_acme-challenge.${id}`));
     // we don't handle any case where only 1 of 2 records has been created (this would require a manual fix)
     if (existingRecords.length > 0) {
         console.log(`✔ DNS records already exist`);
@@ -35570,11 +35576,11 @@ const checkIfInstanceExists = async (vultr, region, domain, id) => {
     console.log("✘ relevant instance does not exist");
     return [];
 };
-const create = async (vultr, region, plan, domain, id, osId, tag) => {
+const create = async (vultr, region, plan, domain, id, osId, tag, sshKeyIds) => {
     // keep time for logging purposes
     const t0 = perf_hooks_1.performance.now();
     try {
-        const instance = await (0, api_1.createInstance)(vultr, region, plan, domain, id, osId, tag);
+        const instance = await (0, api_1.createInstance)(vultr, region, plan, domain, id, osId, tag, sshKeyIds);
         const instanceId = instance.id;
         console.log(`🌐 instance created with ID: ${instanceId}`);
         // get IP when available
@@ -35587,10 +35593,10 @@ const create = async (vultr, region, plan, domain, id, osId, tag) => {
         // create DNS records
         const [dnsRecordA, dnsRecordCname] = await Promise.all([
             (0, api_1.createDnsRecord)(vultr, domain, id, "A", instanceIp),
-            (0, api_1.createDnsRecord)(vultr, domain, id, "CNAME", instanceIp),
+            (0, api_1.createDnsRecord)(vultr, `*.${domain}`, id, "A", instanceIp),
         ]);
         console.log(`🌐 A record created with ID: ${dnsRecordA.id}`);
-        console.log(`🌐 CNAME record created with ID: ${dnsRecordCname.id}`);
+        console.log(`🌐 A record (wildcard) created with ID: ${dnsRecordCname.id}`);
         // wait for server to fully spin up
         await (0, api_1.confirmInstanceIsReady)(vultr, instanceId);
         // sometimes the server isn't immediately ready for an ssh session
