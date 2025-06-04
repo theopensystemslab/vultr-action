@@ -36,6 +36,8 @@ const main = async (): Promise<number> => {
   const domain = getVar("domain");
   const osType = getVar("os_type");
   const tag = getVar("tag");
+  // Accept comma separated list, ignoring spaces
+  const sshKeyIds = getVar("sshKeyIds").split(/\s*,\s*/);
 
   console.log(
     `🚀 running vultr script with following arguments:
@@ -45,7 +47,8 @@ const main = async (): Promise<number> => {
         domain=${domain}
         pullRequestId=${pullRequestId}
         osType=${osType}
-        tag=${tag}`,
+        tag=${tag}
+        sshKeyIds=${sshKeyIds}`
   );
 
   const osId = getOsId(osType);
@@ -79,6 +82,7 @@ const main = async (): Promise<number> => {
         pullRequestId,
         osId,
         tag,
+        sshKeyIds,
       );
     case "destroy":
       if (existingRecordIds.length == 0 || existingInstanceIds.length == 0) {
@@ -111,7 +115,10 @@ const checkIfDnsRecordsExist = async (
   const allRecords = await getAllRecords(vultr, domain);
   const existingRecords = allRecords.filter(
     ({ type, name }) =>
-      (type === "CNAME" && name === `*.${id}`) || (type === "A" && name === id),
+      (type === "A" && name === id) ||
+      (type === "A" && name === `*.${id}`) || 
+      (type === "TXT" && name === `_acme-challenge.${id}`),
+
   );
   // we don't handle any case where only 1 of 2 records has been created (this would require a manual fix)
   if (existingRecords.length > 0) {
@@ -153,6 +160,7 @@ const create = async (
   id: string,
   osId: string,
   tag: string,
+  sshKeyIds?: string[]
 ): Promise<number> => {
   // keep time for logging purposes
   const t0 = performance.now();
@@ -165,6 +173,7 @@ const create = async (
       id,
       osId,
       tag,
+      sshKeyIds,
     );
 
     const instanceId = instance.id;
@@ -180,12 +189,14 @@ const create = async (
     setOutput("instance", instance);
 
     // create DNS records
-    const [dnsRecordA, dnsRecordCname] = await Promise.all([
+    const [dnsRecordA, wildcardRecordA] = await Promise.all([
       createDnsRecord(vultr, domain, id, "A", instanceIp),
-      createDnsRecord(vultr, domain, id, "CNAME", instanceIp),
+      createDnsRecord(vultr, domain, `*.${id}.${domain}`, "A", instanceIp),
     ]);
     console.log(`🌐 A record created with ID: ${dnsRecordA.id}`);
-    console.log(`🌐 CNAME record created with ID: ${dnsRecordCname.id}`);
+    console.log(
+      `🌐 A record (wildcard) created with ID: ${wildcardRecordA.id}`
+    );
 
     // wait for server to fully spin up
     await confirmInstanceIsReady(vultr, instanceId);

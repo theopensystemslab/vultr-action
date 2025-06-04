@@ -30,6 +30,7 @@ declare module "@vultr/vultr-node" {
         label: string;
         hostname: string;
         tags: string[];
+        sshkey_id?: string[];
       }) => Promise<InstanceWrapper>;
 
       listInstances: (parameters: {

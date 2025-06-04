@@ -76,17 +76,15 @@ export const getAllInstances = async (
 export const createDnsRecord = async (
   vultr: Vultr,
   domain: string,
-  id: string,
+  name: string,
   type: "A" | "CNAME",
-  instanceIp: string,
+  data: string,
 ): Promise<Record> => {
-  const name = type == "A" ? id : `*.${id}`;
-  const data = type == "A" ? instanceIp : `${id}.${domain}`;
   const res = await vultr.dns.createRecord({
     "dns-domain": domain,
-    name: name,
-    type: type,
-    data: data,
+    name,
+    type,
+    data,
   });
   // vultr-node doesn't necessarily throw a proper error if record creation fails
   if (!res?.record)
@@ -113,6 +111,7 @@ export const createInstance = async (
   id: string,
   osId: string,
   tag: string,
+  sshKeyIds?: string[],
 ): Promise<Instance> => {
   const host = `${id}.${domain}`;
   const res = await vultr.instances.createInstance({
@@ -122,6 +121,7 @@ export const createInstance = async (
     label: host,
     hostname: host,
     tags: [tag], // 'tag' is deprecated
+    sshkey_id: sshKeyIds,
   });
   // vultr-node doesn't necessarily throw a proper error if instance creation fails
   if (!res?.instance)
