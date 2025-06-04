@@ -35336,14 +35336,12 @@ const getAllInstances = async (vultr, region) => {
     return allInstances;
 };
 exports.getAllInstances = getAllInstances;
-const createDnsRecord = async (vultr, domain, id, type, instanceIp) => {
-    const name = type == "A" ? id : `*.${id}`;
-    const data = type == "A" ? instanceIp : `${id}.${domain}`;
+const createDnsRecord = async (vultr, domain, name, type, data) => {
     const res = await vultr.dns.createRecord({
         "dns-domain": domain,
-        name: name,
-        type: type,
-        data: data,
+        name,
+        type,
+        data,
     });
     // vultr-node doesn't necessarily throw a proper error if record creation fails
     if (!res?.record)
@@ -35593,7 +35591,7 @@ const create = async (vultr, region, plan, domain, id, osId, tag, sshKeyIds) => 
         // create DNS records
         const [dnsRecordA, wildcardRecordA] = await Promise.all([
             (0, api_1.createDnsRecord)(vultr, domain, id, "A", instanceIp),
-            (0, api_1.createDnsRecord)(vultr, `*.${id}.${domain}`, id, "A", instanceIp),
+            (0, api_1.createDnsRecord)(vultr, domain, `*.${id}.${domain}`, "A", instanceIp),
         ]);
         console.log(`🌐 A record created with ID: ${dnsRecordA.id}`);
         console.log(`🌐 A record (wildcard) created with ID: ${wildcardRecordA.id}`);
