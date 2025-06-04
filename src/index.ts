@@ -189,12 +189,14 @@ const create = async (
     setOutput("instance", instance);
 
     // create DNS records
-    const [dnsRecordA, dnsRecordCname] = await Promise.all([
+    const [dnsRecordA, wildcardRecordA] = await Promise.all([
       createDnsRecord(vultr, domain, id, "A", instanceIp),
-      createDnsRecord(vultr, `*.${domain}`, id, "A", instanceIp),
+      createDnsRecord(vultr, `*.${id}.${domain}`, id, "A", instanceIp),
     ]);
     console.log(`🌐 A record created with ID: ${dnsRecordA.id}`);
-    console.log(`🌐 A record (wildcard) created with ID: ${dnsRecordCname.id}`);
+    console.log(
+      `🌐 A record (wildcard) created with ID: ${wildcardRecordA.id}`
+    );
 
     // wait for server to fully spin up
     await confirmInstanceIsReady(vultr, instanceId);

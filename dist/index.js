@@ -35591,12 +35591,12 @@ const create = async (vultr, region, plan, domain, id, osId, tag, sshKeyIds) => 
         (0, core_1.setOutput)("default_password", instance.default_password);
         (0, core_1.setOutput)("instance", instance);
         // create DNS records
-        const [dnsRecordA, dnsRecordCname] = await Promise.all([
+        const [dnsRecordA, wildcardRecordA] = await Promise.all([
             (0, api_1.createDnsRecord)(vultr, domain, id, "A", instanceIp),
-            (0, api_1.createDnsRecord)(vultr, `*.${domain}`, id, "A", instanceIp),
+            (0, api_1.createDnsRecord)(vultr, `*.${id}.${domain}`, id, "A", instanceIp),
         ]);
         console.log(`🌐 A record created with ID: ${dnsRecordA.id}`);
-        console.log(`🌐 A record (wildcard) created with ID: ${dnsRecordCname.id}`);
+        console.log(`🌐 A record (wildcard) created with ID: ${wildcardRecordA.id}`);
         // wait for server to fully spin up
         await (0, api_1.confirmInstanceIsReady)(vultr, instanceId);
         // sometimes the server isn't immediately ready for an ssh session
