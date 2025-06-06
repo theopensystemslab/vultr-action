@@ -35507,7 +35507,7 @@ const main = async () => {
     const osType = (0, common_1.getVar)("os_type");
     const tag = (0, common_1.getVar)("tag");
     // Accept comma separated list, ignoring spaces
-    const sshKeyIds = (0, common_1.getVar)("sshKeyIds").split(/\s*,\s*/);
+    const sshKeyIds = (0, common_1.getVar)("ssh_key_ids").split(/\s*,\s*/);
     console.log(`🚀 running vultr script with following arguments:
         action=${action}
         region=${region}
