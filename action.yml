@@ -17,6 +17,8 @@ inputs:
     required: true
   tag:
     required: true
+  ssh_key_ids:
+    required: true
 outputs:
   ip_address:
     description: "IP address"

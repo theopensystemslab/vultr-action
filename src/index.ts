@@ -37,7 +37,7 @@ const main = async (): Promise<number> => {
   const osType = getVar("os_type");
   const tag = getVar("tag");
   // Accept comma separated list, ignoring spaces
-  const sshKeyIds = getVar("sshKeyIds").split(/\s*,\s*/);
+  const sshKeyIds = getVar("ssh_keys_ids").split(/\s*,\s*/);
 
   console.log(
     `🚀 running vultr script with following arguments:
