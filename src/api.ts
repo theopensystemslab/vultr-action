@@ -111,7 +111,7 @@ export const createInstance = async (
   id: string,
   osId: string,
   tag: string,
-  sshKeyIds?: string[],
+  sshKeyIds: string[],
 ): Promise<Instance> => {
   const host = `${id}.${domain}`;
   const res = await vultr.instances.createInstance({

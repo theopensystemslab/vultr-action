@@ -160,7 +160,7 @@ const create = async (
   id: string,
   osId: string,
   tag: string,
-  sshKeyIds?: string[]
+  sshKeyIds: string[]
 ): Promise<number> => {
   // keep time for logging purposes
   const t0 = performance.now();
