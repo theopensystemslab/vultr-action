@@ -113,12 +113,11 @@ const checkIfDnsRecordsExist = async (
     `🔍 checking for existing DNS records for pull request ${id} on domain ${domain}`,
   );
   const allRecords = await getAllRecords(vultr, domain);
+  // ignore any TXT records from a DNS challenge that the Caddy Vultr module failed to clean up
   const existingRecords = allRecords.filter(
     ({ type, name }) =>
       (type === "A" && name === id) ||
-      (type === "A" && name === `*.${id}`) || 
-      (type === "TXT" && name === `_acme-challenge.${id}`),
-
+      (type === "A" && name === `*.${id}`)
   );
   // we don't handle any case where only 1 of 2 records has been created (this would require a manual fix)
   if (existingRecords.length > 0) {
