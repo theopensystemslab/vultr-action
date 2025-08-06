@@ -35598,8 +35598,8 @@ const create = async (vultr, region, plan, domain, id, osId, tag, sshKeyIds) => 
         // wait for server to fully spin up
         await (0, api_1.confirmInstanceIsReady)(vultr, instanceId);
         // sometimes the server isn't immediately ready for an ssh session
-        console.log("✅ instance active - waiting another 20s to ensure it's accessible");
-        await (0, common_1.sleep)(20_000);
+        console.log("✅ instance active - waiting another 30s to ensure it's accessible");
+        await (0, common_1.sleep)(30_000);
         console.log(`⌛ all resources created and made ready in ${(0, common_1.getDurationSeconds)(t0, perf_hooks_1.performance.now())}s`);
     }
     catch (err) {
