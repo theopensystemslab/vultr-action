@@ -202,9 +202,9 @@ const create = async (
     await confirmInstanceIsReady(vultr, instanceId);
     // sometimes the server isn't immediately ready for an ssh session
     console.log(
-      "✅ instance active - waiting another 20s to ensure it's accessible",
+      "✅ instance active - waiting another 30s to ensure it's accessible",
     );
-    await sleep(20_000);
+    await sleep(30_000);
     console.log(
       `⌛ all resources created and made ready in ${getDurationSeconds(
         t0,
